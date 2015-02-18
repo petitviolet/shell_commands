@@ -1,0 +1,11 @@
+#!/usr/local/bin/zsh
+
+if [ $# -eq 1 ]; then
+  target=$1
+  sed -i '' -e 's/、/，/g' $target
+  sed -i '' -e 's/。/．/g' $target
+else
+  find . -name './*.tex' -print0 | xargs -0 sed -i '' -e 's/、/，/g'
+  find . -name './*.tex' -print0 | xargs -0 sed -i '' -e 's/。/．/g'
+fi
+exit 0
