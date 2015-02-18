@@ -1,10 +1,10 @@
 #!/bin/zsh
-# batch resize by convert with '-geometry' option
+# batch resize by convert with '-resize' option
 
 USAGE="Usage: "`basename $0`"
                 [-t <directory path>] [-s <size>]
                 [-p <prefix>] [-v] [-f] [-i]
-batch resize by convert with '-geometry' option
+batch resize by convert with '-resize' option
  options:
   -t: target directory
   -s: target size (e.g. 500x300), default 300x300
@@ -61,6 +61,6 @@ for fname in $fnames; do
     echo $input '=>' $output
   fi
   if ! $is_test; then
-    convert -geometry $size $input $output
+    convert -define jpeg:size=$size -resize $size $input $output
   fi
 done
