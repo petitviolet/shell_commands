@@ -2,6 +2,9 @@
 # batch resize by convert with '-geometry' option
 
 USAGE="Usage: "`basename $0`"
+                [-t <directory path>] [-s <size>]
+                [-p <prefix>] [-v] [-f] [-i]
+batch resize by convert with '-geometry' option
  options:
   -t: target directory
   -s: target size (e.g. 500x300), default 300x300
