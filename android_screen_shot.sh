@@ -1,4 +1,6 @@
 #!/bin/sh
+# android screenshot shortcut command
+
 
 DATE_TIME=`date +"%Y%m%d-%H%M%S"`
 FILE_NAME=${DATE_TIME}.png

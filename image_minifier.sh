@@ -1,4 +1,5 @@
 #!/bin/zsh
+# batch resize by convert with '-geometry' option
 
 USAGE="Usage: "`basename $0`"
  options:

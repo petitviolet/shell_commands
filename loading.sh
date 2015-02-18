@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# indicator for loading time
 
 loading() {
   local count=30
