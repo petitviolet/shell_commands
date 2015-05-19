@@ -25,6 +25,14 @@ loading() {
 
 _gradle() {
   local cur="$1"
+  completions=$(gradle_tasks)
+  local -a commands
+  commands=( "${(o)${(z)completions}}" )
+  compadd $commands
+  return 0;
+}
+
+function gradle_command() {
   local gradle_cmd='gradle'
   if [[ -x ./gradlew ]]; then
     gradle_cmd='./gradlew'
@@ -32,7 +40,11 @@ _gradle() {
   if [[ -x ../gradlew ]]; then
     gradle_cmd='../gradlew'
   fi
+  echo $gradle_cmd
+}
 
+gradle_tasks() {
+  gradle_cmd=$(gradle_command)
   local completions=''
   local cache_dir="$HOME/.gradle_tabcompletion"
   mkdir -p $cache_dir
@@ -59,19 +71,29 @@ _gradle() {
     set -m
     # indicatorのprocess id
     local LOADING_PID=$!
-    completions=$($gradle_cmd --no-color --quiet tasks | grep ' - ' | awk '{print $1}' | tr '\n' ' ')
+    completions=$($gradle_cmd --no-color --quiet tasks --all | grep --color=none ' - ' | awk '{print $1}' | tr '\n' ' ')
     # indicatorを殺す
     kill -INT $LOADING_PID
     if [[ ! -z $completions ]]; then
       echo $completions > $cache_dir/$gradle_files_checksum
     fi
   fi
-
-  local -a commands
-  commands=( "${(z)completions}" )
-  compadd $commands
-  return 0;
+  echo $completions
 }
+
+function peco-select-gradle-tasks() {
+  gradle_cmd=$(gradle_command)
+  completions=$(gradle_tasks)
+  local selected_task=$(echo ${(o)${(z)completions}} | tr ' ' '\n' | peco)
+  if [ -n "$selected_task" ]; then
+    BUFFER="$gradle_cmd $selected_task"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+
+zle -N peco-select-gradle-tasks
+bindkey "^g^t" peco-select-gradle-tasks
 
 compdef _gradle gradle
 compdef _gradle gradlew
