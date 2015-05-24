@@ -4,7 +4,7 @@
 # refs: https://gist.github.com/nolanlawson/8694399 : bash-version
 
 # 読み込み中を表示
-loading() {
+function loading() {
   local count=30
   if [ $# -eq 1 ]; then
     count=$1
@@ -37,7 +37,7 @@ function gradle_command() {
 }
 
 # gradleのtask一覧
-gradle_tasks() {
+function gradle_tasks() {
   gradle_cmd=$(gradle_command)
   local completions=''
   local cache_dir="$HOME/.gradle_tabcompletion"
@@ -91,12 +91,12 @@ zle -N peco-select-gradle-tasks
 bindkey "^g^t" peco-select-gradle-tasks
 
 # gradleのtag補完
-_gradle() {
+function _gradle() {
   local cur="$1"
   completions=$(gradle_tasks)
-  local -a commands
-  commands=( "${(o)${(z)completions}}" )
-  compadd $commands
+  local -a tasks
+  tasks=("${(z)completions}")
+  compadd $tasks
   return 0;
 }
 
