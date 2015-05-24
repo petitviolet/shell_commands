@@ -3,6 +3,7 @@
 
 # refs: https://gist.github.com/nolanlawson/8694399 : bash-version
 
+# 読み込み中を表示
 loading() {
   local count=30
   if [ $# -eq 1 ]; then
@@ -23,15 +24,7 @@ loading() {
   exit 0
 }
 
-_gradle() {
-  local cur="$1"
-  completions=$(gradle_tasks)
-  local -a commands
-  commands=( "${(o)${(z)completions}}" )
-  compadd $commands
-  return 0;
-}
-
+# 使用するgradleコマンド
 function gradle_command() {
   local gradle_cmd='gradle'
   if [[ -x ./gradlew ]]; then
@@ -43,6 +36,7 @@ function gradle_command() {
   echo $gradle_cmd
 }
 
+# gradleのtask一覧
 gradle_tasks() {
   gradle_cmd=$(gradle_command)
   local completions=''
@@ -81,6 +75,7 @@ gradle_tasks() {
   echo $completions
 }
 
+# pecoでtask選択
 function peco-select-gradle-tasks() {
   gradle_cmd=$(gradle_command)
   completions=$(gradle_tasks)
@@ -94,6 +89,16 @@ function peco-select-gradle-tasks() {
 
 zle -N peco-select-gradle-tasks
 bindkey "^g^t" peco-select-gradle-tasks
+
+# gradleのtag補完
+_gradle() {
+  local cur="$1"
+  completions=$(gradle_tasks)
+  local -a commands
+  commands=( "${(o)${(z)completions}}" )
+  compadd $commands
+  return 0;
+}
 
 compdef _gradle gradle
 compdef _gradle gradlew
