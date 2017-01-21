@@ -38,6 +38,7 @@ s3-upload-image() {
 }
 
 image_optimize() {
+  # npm install -g imageoptim-cli
   hash imageOptim &>/dev/null
   if [ $? -eq 0 ]; then
     echo $1 | imageOptim
