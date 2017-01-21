@@ -36,8 +36,8 @@ s3_upload_image() {
 
 image_optimize() {
   # npm install -g imageoptim-cli
-  hash imageOptim &>/dev/null
-  if [ $? -eq 0 ]; then
+  if type imageOptim &>/dev/null
+  then
     echo $1 | imageOptim
   fi
 }
@@ -48,14 +48,13 @@ if [ $# -eq 0 ]; then
 fi
 
 subcommand=$1
-shift
 
 if [ $# -eq 0 ]; then
   echo 'you should specify a image file path'
   exit 1
 fi
 
-target=$1
+target=$2
 
 case $subcommand in
   upload)
