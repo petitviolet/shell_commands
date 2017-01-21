@@ -10,7 +10,7 @@ S3FILE_PATH="s3://${BUCKET_NAME}/${S3DIRECTORY}"
 
 s3_upload() {
   local target=$1
-  aws --profile=$AWS_PROFILE s3 cp ${target} "${S3FILE_PATH}/$(basename $target)" --acl public-read 1>&2
+  aws --profile=$AWS_PROFILE s3 cp ${target} "${S3FILE_PATH}/$(basename $target)" --acl public-read
 }
 
 s3_file_url() {
@@ -27,12 +27,20 @@ s3-upload-image() {
 
   local target=$1
   if [ -e $target ]; then
-    s3_upload $target
+    image_optimize $target 1>&2
+    s3_upload $target 1>&2
     s3_file_url $target | tr -d '\n'
     exit 0
   else
     echo "${target} does not exists."
     exit 1
+  fi
+}
+
+image_optimize() {
+  hash imageOptim &>/dev/null
+  if [ $? -eq 0 ]; then
+    echo $1 | imageOptim
   fi
 }
 
