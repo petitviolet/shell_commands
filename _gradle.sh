@@ -24,7 +24,6 @@ function loading() {
   exit 0
 }
 
-# 使用するgradleコマンド
 function gradle_command() {
   local gradle_cmd='gradle'
   if [[ -x ./gradlew ]]; then
