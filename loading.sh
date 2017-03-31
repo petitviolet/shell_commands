@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # indicator for loading time
 
-loading() {
+function loading() {
   local count=30
   if [ $# -eq 1 ]; then
     count=$1
@@ -15,7 +15,6 @@ loading() {
     echo -en '\\\b' 1>&2; sleep 0.05;
   done
   echo -en ' \b' 1>&2;
-  exit 0
 }
 
 loading $@
