@@ -32,3 +32,32 @@ upload: ../../tmp/scala.png to s3://petitviolet/path/to/image/scala.png
 https://petitviolet.s3.amazonaws.com/path/to/image/scala.png%
 ```
 
+## loading
+
+show loading indicator.
+
+```sh
+loading 5
+# loading <seconds>
+```
+
+![loading](https://petitviolet.s3.amazonaws.com/public/image/loading_indicator.gif)
+
+### using loading indicator in other function
+
+```sh
+other_function() {
+    # show loading indicator
+    ## disable job control to suppress print process id
+    set +m
+    loading 100 &
+    set -m
+    local loading_pid=$!
+
+    # execute heavy command
+    do_something_heavy
+
+    # remove indicator 
+    kill -INT $loading_pid &>/dev/null
+}
+```
