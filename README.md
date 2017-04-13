@@ -36,6 +36,9 @@ https://petitviolet.s3.amazonaws.com/path/to/image/scala.png%
 
 show loading indicator.
 
+reference in Japanese.
+[Zshで長い処理をしている間に読込中を表示する - Qiita](http://qiita.com/petitviolet/items/5cc1916eb3fdb8d54823)
+
 ```sh
 loading 5
 # loading <seconds>
