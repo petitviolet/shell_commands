@@ -6,6 +6,7 @@ function loading() {
   if [ $# -eq 1 ]; then
     count=$1
   fi
+  trap "echo -en '\r                      '; exit 0" INT
 
   for i in `seq 1 1 $count`
   do
