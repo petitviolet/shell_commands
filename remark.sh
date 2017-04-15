@@ -1,7 +1,5 @@
 #!/bin/bash
 
-remark $*
-
 function remark() {
   if [ $# -ne 1 ]; then
     exit 1
@@ -23,7 +21,9 @@ function remark() {
   local PY_PID=$!
   \cd $ORIGIN
   open -a "Google Chrome" "http://localhost:9999/$(__remark_html_file_name $FILE_NAME)"
-  echo "*****(copied)\nkill $PY_PID\n*****"
+  echo "*****(copied)"
+  echo "kill $PY_PID"
+  echo "*****"
   echo "kill $PY_PID" | pbcopy
 }
 
@@ -40,14 +40,24 @@ function __create_remark_html() {
   cat << EOS | sed -e "s;{{FILE_NAME}};$1;g" > "/var/tmp/$(__remark_html_file_name $1)"
   <DOCTYPE html>
   <html>
-    <head><title>Presentation</title></head>
+    <head>
+      <title>Presentation</title>
+    </head>
     <body>
       <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
       <script type="text/javascript">
         var slideshow = remark.create({sourceUrl: "{{FILE_NAME}}"});
       </script>
+      <style type="text/css">
+        blockquote > p {
+          background-color: #EEE;
+          padding: 0.5em;
+        }
+      </style>
     </body>
   </html>
 EOS
 }
+
+remark $*
 
