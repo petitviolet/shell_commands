@@ -1,8 +1,13 @@
 #!/bin/bash
 
 function remark() {
+  local PID_FILE="/var/tmp/remark.pid"
   if [ $# -ne 1 ]; then
     exit 1
+  fi
+  if [ -f $PID_FILE ]; then
+    kill $(cat $PID_FILE) 2>/dev/null
+    rm $PID_FILE
   fi
   ln -s $1 /var/tmp/ &>/dev/null
   local FILE_NAME=$(__split_file_name $1)
@@ -18,13 +23,9 @@ function remark() {
     python -m SimpleHTTPServer 9999 &> /dev/null &
   fi
   set -m
-  local PY_PID=$!
+  echo $! > /var/tmp/remark.pid
   \cd $ORIGIN
   open -a "Google Chrome" "http://localhost:9999/$(__remark_html_file_name $FILE_NAME)"
-  echo "*****(copied)"
-  echo "kill $PY_PID"
-  echo "*****"
-  echo "kill $PY_PID" | pbcopy
 }
 
 function __split_file_name() {
@@ -46,12 +47,25 @@ function __create_remark_html() {
     <body>
       <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
       <script type="text/javascript">
-        var slideshow = remark.create({sourceUrl: "{{FILE_NAME}}"});
+        var slideshow = remark.create({
+          sourceUrl: "{{FILE_NAME}}",
+          navigation: {
+            scroll: false
+          },
+          highlightStyle: "github",
+          highlightLines: true
+        });
       </script>
       <style type="text/css">
         blockquote > p {
           background-color: #EEE;
           padding: 0.5em;
+        }
+        .remark-slide {
+          position: relative !important;
+        }
+        .remark-slide-scaler {
+          overflow: auto;
         }
       </style>
     </body>
