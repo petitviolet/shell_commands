@@ -1,21 +1,24 @@
 #!/bin/bash
 
+REMARK_ROOT=/var/tmp
+
 function remark() {
-  local PID_FILE="/var/tmp/remark.pid"
+  local PID_FILE="$REMARK_ROOT/remark.pid"
   if [ $# -ne 1 ]; then
     exit 1
   fi
-  if [ -f $PID_FILE ]; then
+  if [ -e $PID_FILE ]; then
     kill $(cat $PID_FILE) 2>/dev/null
     rm $PID_FILE
   fi
-  ln -s $1 /var/tmp/ &>/dev/null
+  # markdown filr symbolic link to $REMARK_ROOT
+  ln -s $1 $REMARK_ROOT/ &>/dev/null
   local FILE_NAME=$(__split_file_name $1)
   echo $FILE_NAME
   __create_remark_html $FILE_NAME
 
   local ORIGIN=$PWD
-  \cd /var/tmp/
+  \cd $REMARK_ROOT/
   set +m
   if [[ $(python --version 2>&1) == *"Python 3"* ]];then
     python -m http.server 9999 &> /dev/null &
@@ -23,7 +26,7 @@ function remark() {
     python -m SimpleHTTPServer 9999 &> /dev/null &
   fi
   set -m
-  echo $! > /var/tmp/remark.pid
+  echo $! > $REMARK_ROOT/remark.pid
   \cd $ORIGIN
   open -a "Google Chrome" "http://localhost:9999/$(__remark_html_file_name $FILE_NAME)"
 }
@@ -37,8 +40,18 @@ function __remark_html_file_name() {
   echo  "$OUT.html"
 }
 
+function __check_remark_js_file() {
+  local TARGET=$REMARK_ROOT/remark-latest.min.js
+  if [ -e $TARGET ]; then
+    :
+  else
+    wget "http://gnab.github.io/remark/downloads/remark-latest.min.js" -O
+  fi
+}
+
 function __create_remark_html() {
-  cat << EOS | sed -e "s;{{FILE_NAME}};$1;g" > "/var/tmp/$(__remark_html_file_name $1)"
+  __check_remark_js_file
+  cat << EOS | sed -e "s;{{FILE_NAME}};$1;g" > "$REMARK_ROOT/$(__remark_html_file_name $1)"
   <DOCTYPE html>
   <html>
     <head>
