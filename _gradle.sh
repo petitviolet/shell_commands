@@ -4,24 +4,24 @@
 # refs: https://gist.github.com/nolanlawson/8694399 : bash-version
 
 # 読み込み中を表示
-// function _loading() {
-//   local count=30
-//   if [ $# -eq 1 ]; then
-//     count=$1
-//   fi
-//   # INT をtrapして最後の出力を消す
-//   trap "echo -n '\r                      '; exit 0" INT
-//
-//   # 改行
-//   echo
-//   for i in `seq 1 1 $count`
-//   do
-//     echo -n '|\r'  1>&2; sleep 0.05;
-//     echo -n '/\r'  1>&2; sleep 0.05;
-//     echo -n '-\r'  1>&2; sleep 0.05;
-//     echo -n '\\\r' 1>&2; sleep 0.05;
-//   done
-// }
+# function _loading() {
+#   local count=30
+#   if [ $# -eq 1 ]; then
+#     count=$1
+#   fi
+#   # INT をtrapして最後の出力を消す
+#   trap "echo -n '\r                      '; exit 0" INT
+#
+#   # 改行
+#   echo
+#   for i in `seq 1 1 $count`
+#   do
+#     echo -n '|\r'  1>&2; sleep 0.05;
+#     echo -n '/\r'  1>&2; sleep 0.05;
+#     echo -n '-\r'  1>&2; sleep 0.05;
+#     echo -n '\\\r' 1>&2; sleep 0.05;
+#   done
+# }
 
 function gradle_command() {
   local gradle_cmd='gradle'
