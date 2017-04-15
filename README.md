@@ -64,3 +64,13 @@ other_function() {
     kill -INT $loading_pid &>/dev/null
 }
 ```
+
+## remark
+
+Show presentation using [remark.js](https://github.com/gnab/remark) from markdown file.
+
+```sh
+remark /path/to/markdown/file.md
+```
+
+Open presentation on Google Chrome.
