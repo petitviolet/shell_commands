@@ -67,6 +67,11 @@ function __create_remark_html() {
         .remark-slide-scaler {
           overflow: auto;
         }
+        .remark-inline-code {
+          background-color: #f4f4f4;
+          color: #dd1144;
+          padding: 0.1em 0.25em 0.1em 0.25em;
+        }
       </style>
     </body>
   </html>
