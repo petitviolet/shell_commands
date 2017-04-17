@@ -2,6 +2,7 @@
 
 REMARK_ROOT=/var/tmp
 REMARK_PORT=9999
+REMARK_JS_FILE=remark-latest.min.js
 
 function remark() {
   # provide a file path to show as a presentation
@@ -54,11 +55,11 @@ function __remark_html_file_name() {
 
 function __check_remark_js_file() {
   # check remark.js file exists or download
-  local TARGET=$REMARK_ROOT/remark-latest.min.js
+  local TARGET=$REMARK_ROOT/$REMARK_JS_FILE
   if [ -e $TARGET ]; then
     :
   else
-    wget "http://gnab.github.io/remark/downloads/remark-latest.min.js" -O
+    wget "http://gnab.github.io/remark/downloads/remark-latest.min.js" -O $TARGET
   fi
 }
 
@@ -72,7 +73,7 @@ function __create_remark_html() {
       <title>Presentation</title>
     </head>
     <body>
-      <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
+      <script src="./$REMARK_JS_FILE" type="text/javascript"></script>
       <script type="text/javascript">
         var slideshow = remark.create({
           sourceUrl: "{{FILE_NAME}}",
