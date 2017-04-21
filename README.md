@@ -74,3 +74,7 @@ remark /path/to/markdown/file.md
 ```
 
 Open presentation on Google Chrome.
+
+# LICENSE
+
+[MIT License](https://petitviolet.mit-license.org/)
