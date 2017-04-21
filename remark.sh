@@ -39,6 +39,7 @@ function remark() {
   \cd $ORIGIN
 
   # open the presentation on Chrome
+  sleep 0.5
   open -a "Google Chrome" "http://localhost:$REMARK_PORT/$(__remark_html_file_name $FILE_NAME)"
 }
 
