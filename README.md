@@ -75,6 +75,32 @@ remark /path/to/markdown/file.md
 
 Open presentation on Google Chrome.
 
+## git subcommands
+
+### git update
+
+fetch and rebase remote branch with stash local changes.
+
+```shell-session
+git update
+```
+
+### git browse
+
+open current branch and directory on remote.
+
+```shell-session
+git browse
+```
+
+### git replace
+
+replace strings with `sed`.
+
+```shell-session
+git replace hoge foo
+```
+
 # LICENSE
 
 [MIT License](https://petitviolet.mit-license.org/)
