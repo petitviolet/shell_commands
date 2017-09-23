@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="https://gist.githubusercontent.com/andyferra/2554919/raw/10ce87fe71b23216e3075d5648b8b9e56f7758e1/github.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="handmade-shell-commands">handmade shell commands</h1>
+<h2 id="s3_image">s3_image</h2>
+<h3 id="usage">usage</h3>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">export</span> <span class="va">AWS_PROFILE=</span><span class="op">&lt;</span><span class="ex">your</span> aws profile<span class="op">&gt;</span>
+<span class="bu">export</span> <span class="va">BUCKET_NAME=</span><span class="op">&lt;</span><span class="ex">your</span> bucket to upload<span class="op">&gt;</span>
+<span class="bu">export</span> <span class="va">S3DIRECTORY=</span><span class="op">&lt;</span><span class="ex">your</span> directory to upload<span class="op">&gt;</span>
+
+<span class="ex">s3_image</span> [upload<span class="kw">|</span><span class="ex">url</span>] <span class="op">&lt;</span>image path<span class="op">&gt;</span></code></pre></div>
+<h3 id="show-image-url">show image url</h3>
+<p>use <code>s3_image url &lt;path&gt;</code>.</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="va">BUCKET_NAME=</span>MYBUCKET <span class="va">S3DIRECTORY=</span>path/to/image <span class="ex">s3_image</span> url local/image/file.png
+<span class="ex">https</span>:/MYBUCKET.s3.amazonaws.com/path/to/image/file.png</code></pre></div>
+<h3 id="upload-image-and-get-url">upload image and get url</h3>
+<p>use <code>s3_image upload &lt;path&gt;</code>.</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="va">BUCKET_NAME=</span>petitviolet <span class="va">S3DIRECTORY=</span>path/to/image <span class="va">AWS_PROFILE=</span>s3 <span class="ex">s3_image</span> upload ~/tmp/scala.png
+<span class="ex">upload</span>: ../../tmp/scala.png to s3://petitviolet/path/to/image/scala.png
+<span class="ex">https</span>://petitviolet.s3.amazonaws.com/path/to/image/scala.png%</code></pre></div>
+<h2 id="loading">loading</h2>
+<p>show loading indicator.</p>
+<p>reference in Japanese. <a href="http://qiita.com/petitviolet/items/5cc1916eb3fdb8d54823">Zshで長い処理をしている間に読込中を表示する - Qiita</a></p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">loading</span> 5
+<span class="co"># loading &lt;seconds&gt;</span></code></pre></div>
+<figure>
+<img src="https://petitviolet.s3.amazonaws.com/public/image/loading_indicator.gif" alt="loading" /><figcaption>loading</figcaption>
+</figure>
+<h3 id="using-loading-indicator-in-other-function">using loading indicator in other function</h3>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">other_function()</span> <span class="kw">{</span>
+    <span class="co"># show loading indicator</span>
+    <span class="co">## disable job control to suppress print process id</span>
+    <span class="kw">set</span> <span class="ex">+m</span>
+    <span class="ex">loading</span> 100 <span class="kw">&amp;</span>
+    <span class="kw">set</span> <span class="ex">-m</span>
+    <span class="bu">local</span> <span class="va">loading_pid=$!</span>
+
+    <span class="co"># execute heavy command</span>
+    <span class="ex">do_something_heavy</span>
+
+    <span class="co"># remove indicator </span>
+    <span class="bu">kill</span> -INT <span class="va">$loading_pid</span> <span class="op">&amp;&gt;</span>/dev/null
+<span class="kw">}</span></code></pre></div>
+<h2 id="remark">remark</h2>
+<p>Show presentation using <a href="https://github.com/gnab/remark">remark.js</a> from markdown file.</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">remark</span> /path/to/markdown/file.md</code></pre></div>
+<p>Open presentation on Google Chrome.</p>
+<h2 id="git-subcommands">git subcommands</h2>
+<h3 id="git-update">git update</h3>
+<p>fetch and rebase remote branch with stash local changes.</p>
+<pre class="shell-session"><code>git update</code></pre>
+<h3 id="git-browse">git browse</h3>
+<p>open current branch and directory on remote.</p>
+<pre class="shell-session"><code>git browse</code></pre>
+<h3 id="git-replace">git replace</h3>
+<p>replace strings with <code>sed</code>.</p>
+<pre class="shell-session"><code>git replace hoge foo</code></pre>
+<h1 id="license">LICENSE</h1>
+<p><a href="https://petitviolet.mit-license.org/">MIT License</a></p>
+</body>
+</html>
