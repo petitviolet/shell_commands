@@ -86,6 +86,21 @@ function __create_remark_html() {
         });
       </script>
       <style type="text/css">
+        @page {
+          size: 908px 681px;
+          margin: 0;
+        }
+
+        @media print {
+          .remark-slide-scaler {
+            width: 100% !important;
+            height: 100% !important;
+            transform: scale(1) !important;
+            top: 0 !important;
+            left: 0 !important;
+          }
+        }
+
         blockquote > p {
           background-color: #EEE;
           padding: 0.5em;
