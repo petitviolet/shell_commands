@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for source in $(ls | grep -v '^install')
+for source in $(ls | grep -v '^install' | grep -v 'doc')
 do
   # remove .sh ext
   target=`echo $source | cut -d '.' -f 1`
