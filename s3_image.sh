@@ -1,5 +1,4 @@
-#!/bin/bash
-# set -e
+#!/bin/bash -e
 
 AWS_PROFILE=${AWS_PROFILE:-"s3"}
 
@@ -64,7 +63,8 @@ case $subcommand in
     s3_file_url $target
     ;;
   *)
-    echo "command $subcommand not found. use [upload|url]."
+    echo "command $subcommand not found. usage: $(basename $0) (upload|url) <target>"
+    echo "optionnal env values: AWS_PROFILE, BUCKET_NAME, S3DIRECTORY"
     exit 1
     ;;
 esac
