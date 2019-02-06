@@ -116,6 +116,13 @@ function __create_remark_html() {
           color: #dd1144;
           padding: 0.1em 0.25em 0.1em 0.25em;
         }
+        table, td, th {
+          border: 1px #999 solid;
+          border-collapse: collapse;
+        }
+        td, th {
+          padding: 4px;
+        }
       </style>
     </body>
   </html>
