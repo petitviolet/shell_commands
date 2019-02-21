@@ -34,11 +34,12 @@ s3_upload_image() {
 }
 
 image_optimize() {
-  # npm install -g imageoptim-cli
-  if type imageOptim &>/dev/null
-  then
-    echo $1 | imageOptim
-  fi
+  echo $1
+  # # npm install -g imageoptim-cli
+  # if type imageOptim &>/dev/null
+  # then
+  #   echo $1 | imageOptim
+  # fi
 }
 
 if [ $# -eq 0 ]; then
