@@ -108,6 +108,9 @@ function __create_remark_html() {
         .remark-slide {
           position: relative !important;
         }
+        .remark-slide-content > p, .remark-slide-content li {
+          font-size: 28px;
+        }
         .remark-slide-scaler {
           overflow: auto;
         }
@@ -122,6 +125,9 @@ function __create_remark_html() {
         }
         td, th {
           padding: 4px;
+        }
+        .footnote {
+          font-size: 14px;
         }
       </style>
     </body>
