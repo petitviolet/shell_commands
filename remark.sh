@@ -40,7 +40,7 @@ function remark() {
 
   # open the presentation on Chrome
   sleep 0.5
-  open -a "Google Chrome" "http://localhost:$REMARK_PORT/$(__remark_html_file_name $FILE_NAME)"
+  open -a "${BROWSER:-Google Chrome}" "http://localhost:$REMARK_PORT/$(__remark_html_file_name $FILE_NAME)"
 }
 
 function __split_file_name() {
@@ -128,6 +128,9 @@ function __create_remark_html() {
         }
         .footnote {
           font-size: 14px;
+        }
+        body {
+            font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif;
         }
       </style>
     </body>
