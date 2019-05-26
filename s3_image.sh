@@ -4,6 +4,7 @@ AWS_PROFILE=${AWS_PROFILE:-"s3"}
 
 BUCKET_NAME=${BUCKET_NAME:-"petitviolet"}
 S3DIRECTORY=${S3DIRECTORY:-"public/image"}
+DOMAIN=${DOMAIN:-"static.petitviolet.net"}
 
 
 s3_upload() {
@@ -15,7 +16,8 @@ s3_upload() {
 s3_file_url() {
   local target=$1
   local domain=".s3.amazonaws.com"
-  local s3url="https://$(echo "${BUCKET_NAME}${domain%/}/${S3DIRECTORY%/}/$(basename $target)" | sed -e 's/\/\//\//g')"
+  # local s3url="https://$(echo "${BUCKET_NAME}${domain%/}/${S3DIRECTORY%/}/$(basename $target)" | sed -e 's/\/\//\//g')"
+  local s3url="https://${DOMAIN}/image/$(echo "$(basename $target)" | sed -e 's/\/\//\//g')"
   echo $s3url
 }
 
@@ -34,12 +36,13 @@ s3_upload_image() {
 }
 
 image_optimize() {
-  echo $1
+  # echo $1
   # # npm install -g imageoptim-cli
   # if type imageOptim &>/dev/null
   # then
   #   echo $1 | imageOptim
   # fi
+  :
 }
 
 if [ $# -eq 0 ]; then
@@ -64,7 +67,7 @@ case $subcommand in
     s3_file_url $target
     ;;
   *)
-    echo "command $subcommand not found. usage: $(basename $0) (upload|url) <target>"
+    echo "command $subcommand not found. usage: $(basename $0) (upload|url) <target>" >2
     echo "optionnal env values: AWS_PROFILE, BUCKET_NAME, S3DIRECTORY"
     exit 1
     ;;
