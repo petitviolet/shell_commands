@@ -10,7 +10,7 @@ function git_update() {
   fi
   echo "updating $current_branch with $target_branch..."
   git fetch
-  git rebase -i origin/$target_branch --autostash -p
+  git rebase -i origin/$target_branch --autostash --rebase-merges
 }
 
 git_update $*
