@@ -19,7 +19,7 @@ tmux_pane_border_string() {
     accent_color='bg=yellow,fg=black'
   fi
 
-  echo "$accent_color pid:$pane_pid current:$current_command whole:$whole_command" >> ~/.log/tmux.log
+  # echo "$accent_color pid:$pane_pid current:$current_command whole:$whole_command" >> ~/.log/tmux.log
   if [[ $current_command = "ssh" ]]; then
     info=$({ pgrep -flap $pane_pid ; ps -o command -p $pane_pid; } | xargs -i{} echo {} | awk '/ssh/' | sed -e 's/^[0-9]*[[:blank:]]*ssh //')
     port=$(echo $info | grep -eo '\-p ([0-9]+)'|sed 's/-p //')
