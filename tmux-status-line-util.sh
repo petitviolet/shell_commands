@@ -2,22 +2,18 @@
 
 # ref: https://qiita.com/arks22/items/7bf7da1433ef9c57b457
 
-tmux_pane_border_string() {
+get_current_command() {
   local current_command=$1
   local pane_pid=$2
-  local pane_tty=$3
-  local pane_current_path=$4
 
-  local whole_command="$(ps -f | grep $pane_pid | grep $current_command | grep -v grep | awk -F ' ' '{for(i=8;i<NF;++i){printf("%s ",$i)}print $NF}' | tail -n 1 | sed 's/\\n/ /g')"
+  echo "$(ps -f | grep $pane_pid | grep $current_command | grep -v grep | awk -F ' ' '{for(i=8;i<NF;++i){printf("%s ",$i)}print $NF}' | tail -n 1 | sed 's/\\n/ /g')"
+}
 
-  local accent_color='bg=black,fg=cyan'
-  local directory="$pane_current_path"
+command_env() {
+  local current_command=$1
+  local pane_pid=$2
 
-  if [[ "$whole_command" =~ "prod" ]]; then
-    accent_color='bg=red,fg=black'
-  elif [[ "$whole_command" =~ "stage" ]]; then
-    accent_color='bg=yellow,fg=black'
-  fi
+  local whole_command="$(get_current_command $1 $2)"
 
   # echo "$accent_color pid:$pane_pid current:$current_command whole:$whole_command" >> ~/.log/tmux.log
   if [[ $current_command = "ssh" ]]; then
@@ -53,10 +49,30 @@ tmux_pane_border_string() {
         fi
       done
     fi
-    echo "#[$accent_color][$pane_pid]<SSH:$user@$host>#[default]"
+
+    echo "#[bg=blue,fg=black]<SSH:$user@$host>#[default]"
   else
-    echo "#[$accent_color][$pane_pid]$directory:#[underscore]$whole_command#[default]"
+    local accent_color=''
+    if [[ "$whole_command" =~ "prod" ]]; then
+      echo "#[bg=red,fg=white]****PRODUCTION****#[default]"
+    elif [[ "$whole_command" =~ "staging" ]]; then
+      echo "#[bg=yellow,fg=black]**STAGING**#[default]"
+    elif [[ "$whole_command" =~ "development" ]]; then
+      echo "#[bg=yellow,fg=black]DEVELOPMENT#[default]"
+    else
+      echo "#[bg=default,fg=cyan]LOCAL#[default]"
+    fi
+
   fi
 }
 
-tmux_pane_border_string $*
+cmd=$1
+shift
+case $cmd in
+  'color')
+    select_accent_color $*
+    ;;
+  'command_env')
+    command_env $*
+    ;;
+esac
