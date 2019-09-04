@@ -52,15 +52,17 @@ command_env() {
 
     echo "#[bg=blue,fg=black]<SSH:$user@$host>#[default]"
   else
-    local accent_color=''
+    local accent_color=""
     if [[ "$whole_command" =~ "prod" ]]; then
-      echo "#[bg=red,fg=white]****PRODUCTION****#[default]"
+      echo "#[bg=colour196,fg=white]****PRODUCTION****#[default]"
     elif [[ "$whole_command" =~ "staging" ]]; then
-      echo "#[bg=yellow,fg=black]**STAGING**#[default]"
+      echo "#[bg=colour154,fg=black]**STAGING**#[default]"
+    elif [[ "$whole_command" =~ "localhost" || "$whole_command" =~ "127.0.0.1" ]]; then
+      echo "#[bg=default,fg=colour75]LOCAL#[default]"
     elif [[ "$whole_command" =~ "development" ]]; then
-      echo "#[bg=yellow,fg=black]DEVELOPMENT#[default]"
+      echo "#[bg=colour87,fg=black]DEVELOPMENT#[default]"
     else
-      echo "#[bg=default,fg=cyan]LOCAL#[default]"
+      # use default
     fi
 
   fi
