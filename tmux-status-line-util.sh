@@ -50,21 +50,40 @@ command_env() {
       done
     fi
 
-    echo "#[bg=blue,fg=black]<SSH:$user@$host>#[default]"
+    echo "#[bg=blue,fg=black]<SSH:$user@$info>#[default]"
   else
     local accent_color=""
     if [[ "$whole_command" =~ "prod" ]]; then
-      echo "#[bg=colour196,fg=white]****PRODUCTION****#[default]"
+      echo "#[$(select_accent_color $*)]****PRODUCTION****#[default]"
     elif [[ "$whole_command" =~ "staging" ]]; then
-      echo "#[bg=colour154,fg=black]**STAGING**#[default]"
+      echo "#[$(select_accent_color $*)]**STAGING**#[default]"
     elif [[ "$whole_command" =~ "localhost" || "$whole_command" =~ "127.0.0.1" ]]; then
-      echo "#[bg=default,fg=colour75]LOCAL#[default]"
+      echo "#[$(select_accent_color $*)]LOCAL#[default]"
     elif [[ "$whole_command" =~ "development" ]]; then
-      echo "#[bg=colour87,fg=black]DEVELOPMENT#[default]"
+      echo "#[$(select_accent_color $*)]DEVELOPMENT#[default]"
     else
       # use default
     fi
 
+  fi
+}
+
+select_accent_color() {
+  local current_command=$1
+  local pane_pid=$2
+
+  local whole_command="$(get_current_command $1 $2)"
+
+  if [[ "$whole_command" =~ "prod" ]]; then
+    echo "bg=colour196,fg=white"
+  elif [[ "$whole_command" =~ "staging" ]]; then
+    echo "bg=colour154,fg=black"
+  elif [[ "$whole_command" =~ "localhost" || "$whole_command" =~ "127.0.0.1" ]]; then
+    echo "bg=default,fg=colour75"
+  elif [[ "$whole_command" =~ "development" ]]; then
+    echo "bg=colour87,fg=black"
+  else
+    # use default
   fi
 }
 
