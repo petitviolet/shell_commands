@@ -6,6 +6,10 @@ BUCKET_NAME=${BUCKET_NAME:-"petitviolet"}
 S3DIRECTORY=${S3DIRECTORY:-"public/image"}
 DOMAIN=${DOMAIN:-"static.petitviolet.net"}
 
+remove_exif() {
+  exiftool -all= $1
+  rm $1_original || true
+}
 
 s3_upload() {
   local target=$1
@@ -22,10 +26,10 @@ s3_file_url() {
 }
 
 s3_upload_image() {
-
   local target=$1
   if [ -e $target ]; then
-    image_optimize $target 1>&2 &&\
+    remove_exif $target 1>&2 &&\
+      image_optimize $target 1>&2 &&\
       s3_upload $target 1>&2 &&\
       s3_file_url $target | tr -d '\n'
     exit 0
