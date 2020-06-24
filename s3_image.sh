@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -eux
 
 AWS_PROFILE=${AWS_PROFILE:-"s3"}
 
@@ -7,13 +7,19 @@ S3DIRECTORY=${S3DIRECTORY:-"public/image"}
 DOMAIN=${DOMAIN:-"static.petitviolet.net"}
 
 remove_exif() {
-  exiftool -all= $1
-  rm $1_original || true
+  /usr/local/bin/exiftool -all= $1
+  if [ -e $1_original ]; then
+    rm $1_original
+  fi
+}
+
+build_s3_file_path() {
+  echo "s3://$(echo "${BUCKET_NAME}/${S3DIRECTORY%/}/$(basename $1)" | sed -e 's/\/\//\//g')"
 }
 
 s3_upload() {
   local target=$1
-  local s3file_path="s3://$(echo "${BUCKET_NAME}/${S3DIRECTORY%/}/$(basename $target)" | sed -e 's/\/\//\//g')"
+  local s3file_path=$(build_s3_file_path $target)
   aws --profile=$AWS_PROFILE s3 cp $target $s3file_path --acl public-read
 }
 
@@ -37,6 +43,11 @@ s3_upload_image() {
     echo "${target} does not exists."
     exit 1
   fi
+}
+
+s3_delete_image() {
+  local s3file_path=$(build_s3_file_path $1)
+  aws --profile=$AWS_PROFILE s3 rm $s3file_path
 }
 
 image_optimize() {
@@ -69,6 +80,9 @@ case $subcommand in
     ;;
   url)
     s3_file_url $target
+    ;;
+  delete)
+    s3_delete_image $target
     ;;
   *)
     echo "command $subcommand not found. usage: $(basename $0) (upload|url) <target>" >2
